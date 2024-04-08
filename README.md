@@ -8,9 +8,9 @@
 <img alt="Airlock IAM" src="https://raw.githubusercontent.com/airlock/iam-helm-charts/main/media/Airlock_IAM_Icon.svg" align="left" width="120">
 </picture>
 
-This repository contains Helm charts to set up Microgatewy to protect Airlock IAM.
+This repository contains Helm charts to set up Microgatewy to protect Airlock IAM. This includes deny rules to protect against OWASP Top 10 threats and OpenAPI specification enforcement to ensure that only valid requests are sent to Airlock IAM.
 
-For more information, please refer to the READMEs in the respective IAM version directories.
+For more information about Airlock IAM and its respective Helm charts, please refer to the READMEs in the respective IAM version directories.
 
 <br/>
 
