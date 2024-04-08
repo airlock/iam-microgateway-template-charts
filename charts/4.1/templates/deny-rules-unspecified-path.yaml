@@ -1,0 +1,17 @@
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: DenyRules
+metadata:
+  name: unspecified-path-deny-rule
+spec:
+  request:
+    builtIn:
+      settings:
+        level: Standard
+        threatHandlingMode: Block
+    custom:
+      rules:
+        - blockData:
+            path:
+              matcher:
+                regex: ".*"
+          ruleKey: "BLOCK_UNSPECIFIED_PATH"
