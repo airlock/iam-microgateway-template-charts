@@ -8,19 +8,16 @@
 <img alt="Airlock IAM" src="https://raw.githubusercontent.com/airlock/iam-helm-charts/main/media/Airlock_IAM_Icon.svg" align="left" width="120">
 </picture>
 
-This repository contains Helm charts to set up Microgatewy to protect Airlock IAM. This includes deny rules to protect against OWASP Top 10 threats and OpenAPI specification enforcement to ensure that only valid requests are sent to Airlock IAM.
+This repository contains Helm Charts to configure Microgateway to protect Airlock IAM. This includes filtering rules to protect against OWASP Top 10 threats and OpenAPI specification enforcement to ensure that only valid requests are sent to Airlock IAM.
 
-For more information about Airlock IAM and its respective Helm charts, please refer to the READMEs in the respective IAM version directories.
+For more information about Airlock IAM and its respective Helm Charts, please refer to the READMEs in the respective IAM version directories.
 
 <br/>
 
 
 ## Disclaimer
 
-The Helm Charts contained in this repository are work in progress and will be improved over time to adopt new functionality of newer versions of Airlock Microgateway.
-
-In their current state, they serve to demonstrate how Airlock Microgateway 4.1 and above can be used to protect Airlock IAM,
-and may be used as a base for your extensions.
+The Helm Charts contained in this repository are production-ready. 
 
 ## Documentation and Links
 
@@ -32,18 +29,18 @@ For setting up Airlock Microgateway 4.0 and above, please check the following re
 
 # Installation Guide
 
-The instructions below provide a short guide on how to set up Airlock Microgateway 4.1 and above for Airlock IAM.
+The instructions below provide a short guide on how to set up Airlock Microgateway 4.X for Airlock IAM.
 
 ## Prerequisites
 
-* Kubernetes (tested with 1.28)
-* Helm (tested with 3.13)
-* Microgateway 4.1+ Deployment
+* Kubernetes
+* Helm
+* Microgateway 4.X
 
 
 ### Microgateway Deployment
 
-If you wish to run Airlock IAM with Airlock Microgateway, you will need to deploy Airlock Microgateway first.
+If you wish to run Airlock IAM with Airlock Microgateway, you will need to deploy the Airlock Microgateway operator first.
 
 For further instructions, please refer to the quick start guide found here: [https://github.com/airlock/microgateway](https://github.com/airlock/microgateway/blob/main/README.md#quick-start-guide)
 
@@ -52,7 +49,7 @@ For further instructions, please refer to the quick start guide found here: [htt
 If you have a paid license, please follow the [premium support process](https://techzone.ergon.ch/support-process).
 
 # License
-The helm charts in this repository are released under the MIT License.
+The Helm Charts in this repository are released under the MIT License.
 
 For the software contained in the Airlock IAM image, please view the [license terms on the official website](https://www.airlock.com/en/airlock-license).
 * Note that decompiling or reverse engineering of the software in the image is not permitted.
