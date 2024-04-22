@@ -30,7 +30,7 @@ For setting up Airlock Microgateway 4.0 and above, please check the following re
 
 ## Integration Example
 
-The [Airlock IAM Helm Charts](https://github.com/airlock/iam-helm-charts) can be used as an example on how to integrate this Helm Chart.
+The [Airlock IAM Helm Charts](https://github.com/airlock/iam-helm-charts) repository can be used as an example on how to integrate this Helm Chart.
 
 ## Support
 
