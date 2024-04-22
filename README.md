@@ -27,22 +27,10 @@ For setting up Airlock Microgateway 4.0 and above, please check the following re
 
 * [Airlock Microgateway on Github](https://github.com/airlock/microgateway)
 
-# Installation Guide
 
-The instructions below provide a short guide on how to set up Airlock Microgateway 4.X for Airlock IAM.
+## Integration Example
 
-## Prerequisites
-
-* Kubernetes
-* Helm
-* Microgateway 4.X
-
-
-### Microgateway Deployment
-
-If you wish to run Airlock IAM with Airlock Microgateway, you will need to deploy the Airlock Microgateway operator first.
-
-For further instructions, please refer to the quick start guide found here: [https://github.com/airlock/microgateway](https://github.com/airlock/microgateway/blob/main/README.md#quick-start-guide)
+The [Airlock IAM Helm Charts](https://github.com/airlock/iam-helm-charts) can be used as an example on how to integrate this Helm Chart.
 
 ## Support
 
