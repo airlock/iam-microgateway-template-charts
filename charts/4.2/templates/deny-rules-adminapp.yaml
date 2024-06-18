@@ -1,0 +1,75 @@
+{{- if has "adminapp" .Values.global.modules }}
+---
+apiVersion: "microgateway.airlock.com/v1alpha1"
+kind: "DenyRules"
+metadata:
+  name: "adminapp-deny-rules"
+spec:
+  request:
+    builtIn:
+      settings:
+        level: "Standard"
+        threatHandlingMode: "Block"
+      exceptions:
+      - ruleKeys:
+        - "SQL"
+        blockedData:
+          json:
+            jsonPath: "$['password','oldPassword','newPassword']"
+      - ruleKeys:
+        - "XSS"
+        blockedData:
+          json:
+            jsonPath: "$['password','oldPassword','newPassword']"
+      - ruleKeys:
+        - "TEMPLATE"
+        blockedData:
+          json:
+            jsonPath: "$['password','oldPassword','newPassword']"
+      - ruleKeys:
+        - "HTML"
+        blockedData:
+          json:
+            jsonPath: "$['password','oldPassword','newPassword']"
+      - ruleKeys:
+        - "HTML"
+        blockedData:
+          json:
+            jsonPath: "$.data.attributes.translations.*"
+        requestConditions:
+          path:
+            matcher:
+              regex: "^/{{.Values.global.instanceName}}-admin/rest/maintenance-messages.*"
+              ignoreCase: false
+      - ruleKeys:
+        - "UNIXCMD"
+        blockedData:
+          json:
+            jsonPath: "$['password','oldPassword','newPassword']"
+      - ruleKeys:
+        - "WINCMD"
+        blockedData:
+          json:
+            jsonPath: "$['password','oldPassword','newPassword']"
+      - ruleKeys:
+        - "LDAP"
+        blockedData:
+          json:
+            jsonPath: "$['password','oldPassword','newPassword']"
+      - ruleKeys:
+        - "IDOR"
+        blockedData:
+          json:
+            jsonPath: "$['password','oldPassword','newPassword']"
+      - ruleKeys:
+        - "ENCODING"
+        blockedData:
+          json:
+            jsonPath: "$['password','oldPassword','newPassword']"
+      - ruleKeys:
+        - "HPP"
+        blockedData:
+          json:
+            jsonPath: "$['password','oldPassword','newPassword']"
+
+{{- end }}
