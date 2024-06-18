@@ -1,0 +1,7 @@
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: Parser
+metadata:
+  name: iam-parser
+spec:
+  request:
+    defaultContentType: "application/json"
