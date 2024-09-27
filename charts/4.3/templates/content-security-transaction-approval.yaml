@@ -1,0 +1,18 @@
+{{- if has "transaction-approval" .Values.global.modules }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: ContentSecurity
+metadata:
+  name: transaction-approval-content-security
+spec:
+  parserRef:
+    name: iam-parser
+  limitsRef:
+    name: iam-limits
+  filter:
+    denyRulesRef:
+      name: transaction-approval-deny-rules
+  apiProtection:
+    openAPIRef:
+      name: transaction-approval-openapi
+
+{{- end }}

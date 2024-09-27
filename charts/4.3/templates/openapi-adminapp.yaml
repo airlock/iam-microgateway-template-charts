@@ -1,0 +1,13 @@
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: OpenAPI
+metadata:
+  name: adminapp-openapi
+spec:
+  settings:
+    schema:
+      source:
+        configMapRef:
+          name: adminapp-openapi-configmap
+    threatHandlingMode: Block
+  response:
+    secured: { }

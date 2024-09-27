@@ -1,0 +1,1261 @@
+apiVersion: v1
+data:
+  openapi.json: |-
+    {
+      "openapi" : "3.0.1",
+      "info" : {
+        "title" : "Airlock IAM Transaction Approval REST API",
+        "version" : "1.0"
+      },
+      "servers" : [ {
+        "url" : "{{ .Values.global.path.transactionApproval }}/rest"
+      } ],
+      "paths" : {
+        "/transaction-approval/dynamic-steps/{stepId}/activate" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Dynamic Step Activation" ],
+            "summary" : "Activates a flow step.",
+            "operationId" : "activate",
+            "responses" : {
+              "200" : {
+                "description" : "Transaction approval successful or further steps required.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>INVALID_STEP_ID</td>\n<td>The selected step ID is not available.</td>\n</tr>\n<tr>\n<td>STEP_ACTIVATION_NOT_ALLOWED</td>\n<td>The selected step cannot be activated.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: always the same as before the activate call.\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "activateCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          },
+          "parameters" : [ {
+            "name" : "stepId",
+            "in" : "path",
+            "description" : "The ID of the step to be activated.",
+            "required" : true,
+            "schema" : {
+              "maxLength" : 30,
+              "minLength" : 1,
+              "type" : "string"
+            }
+          } ]
+        },
+        "/transaction-approval/dynamic-steps/{stepId}/deactivate" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Dynamic Step Activation" ],
+            "summary" : "Deactivates a flow step.",
+            "operationId" : "deactivate",
+            "responses" : {
+              "200" : {
+                "description" : "Transaction approval successful or further steps required.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>INVALID_STEP_ID</td>\n<td>The selected step ID is not available.</td>\n</tr>\n<tr>\n<td>STEP_DEACTIVATION_NOT_ALLOWED</td>\n<td>The selected step cannot be deactivated.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: always the same as before the deactivate call.\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "deactivateCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          },
+          "parameters" : [ {
+            "name" : "stepId",
+            "in" : "path",
+            "description" : "The ID of the step to be deactivated",
+            "required" : true,
+            "schema" : {
+              "maxLength" : 30,
+              "minLength" : 1,
+              "type" : "string"
+            }
+          } ]
+        },
+        "/transaction-approval/dynamic-steps/retrieve" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Dynamic Step Activation" ],
+            "summary" : "Retrieves list of all steps that can be dynamically activated or deactivated on the current step.",
+            "operationId" : "retrieve",
+            "responses" : {
+              "200" : {
+                "description" : "The information has been successfully returned.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "retrieveCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/flow" : {
+          "delete" : {
+            "tags" : [ "Transaction Approval" ],
+            "summary" : "Aborts the current transaction approval flow and terminates any session connected to it.",
+            "operationId" : "abort",
+            "responses" : {
+              "204" : {
+                "description" : "Transaction Approval session successfully terminated.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "abortCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/flows/{flowId}/select" : {
+          "post" : {
+            "tags" : [ "Transaction Approval" ],
+            "summary" : "<div id=\"flowStart\"/> Selects a transaction approval flow.",
+            "operationId" : "selectFlow",
+            "responses" : {
+              "200" : {
+                "description" : " Transaction approval flow selection successful.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>UNEXPECTED_CALL</td>\n<td>Another transaction approval flow is already in progress.</td>\n</tr>\n</table>\n</div>\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "404" : {
+                "description" : "No flow with the requested ID exists.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "selectFlowCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          },
+          "parameters" : [ {
+            "name" : "flowId",
+            "in" : "path",
+            "description" : "the ID of the selected flow as configured.",
+            "required" : true,
+            "schema" : {
+              "maxLength" : 30,
+              "minLength" : 1,
+              "type" : "string"
+            }
+          } ]
+        },
+        "/transaction-approval/goto-targets/{stepId}/goto" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Goto" ],
+            "summary" : "Go to the selected flow step.",
+            "operationId" : "doGoto",
+            "responses" : {
+              "200" : {
+                "description" : "Transaction approval successful or further steps required.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>GOTO_FAILED</td>\n<td>The selected step ID is not available.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: always the same as before the goto call.\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "doGotoCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          },
+          "parameters" : [ {
+            "name" : "stepId",
+            "in" : "path",
+            "description" : "The goto target's step ID.",
+            "required" : true,
+            "schema" : {
+              "maxLength" : 30,
+              "minLength" : 1,
+              "type" : "string"
+            }
+          } ]
+        },
+        "/transaction-approval/goto-targets/retrieve" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Goto" ],
+            "summary" : "Retrieves possible target steps of an interactive goto.",
+            "operationId" : "retrieve_1",
+            "responses" : {
+              "200" : {
+                "description" : "The information has been successfully returned.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "retrieve_1CorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/parameters" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Message", "AuthTokenId" ],
+            "summary" : "Validate and save parameters for transaction approval.",
+            "operationId" : "validateAndConsume",
+            "requestBody" : {
+              "description" : "Contains the id used for device selection in further steps and message parameters used to create a transaction approval message.",
+              "content" : {
+                "*/*" : {
+                  "schema": true
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "200" : {
+                "description" : "Message parameters and id for device selection successfully validated and saved.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "If some parameters are missing or not supported.\n<br>Possible next step: <tt>PARAMETERS_REQUIRED</tt> (as documented <a href=\"#nextApprovalStepCodes\">here</a>).\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "The current flow has been aborted.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "validateAndConsumeCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/airlock-2fa/status/poll" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Airlock 2FA" ],
+            "summary" : "<p>Polls Airlock 2FA transaction approval status.</p> <p>Allows polling whether the transaction was approved by the app (\"online validation\").",
+            "operationId" : "pollOnlineValidation",
+            "responses" : {
+              "200" : {
+                "description" : "Transaction approval successful (if attribute <tt>nextStep</tt> is missing),\ntransaction not yet validated (if <tt>nextStep</tt> has value <tt>AIRLOCK_2FA_POLLING_REQUIRED</tt> or <tt>AIRLOCK_2FA_POLLING_OR_OTP_REQUIRED</tt>),\nfurther steps required in all other cases.\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>TRANSACTION_DENIED</td>\n<td>The transaction was denied. This could be due to the user actively cancelling the transaction or a timeout.</td>\n</tr>\n</table>\n</div>\n<br>The current transaction approval flow has been aborted.\n<br>Possible next step: none.\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "pollOnlineValidationCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/airlock-2fa/devices/retrieve" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Airlock 2FA" ],
+            "summary" : "Retrieves all applicable Airlock 2FA devices.",
+            "operationId" : "retrieveDeviceChoices",
+            "responses" : {
+              "200" : {
+                "description" : "Available devices retrieved.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            },
+            "deprecated" : true
+          },
+          "options" : {
+            "operationId" : "retrieveDeviceChoicesCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/airlock-2fa/mobile-only/challenge/retrieve" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Airlock 2FA" ],
+            "summary" : "Retrieves the challenge for transaction approval in case of mobile-only.",
+            "operationId" : "retrieveMobileOnlyChallenge",
+            "responses" : {
+              "200" : {
+                "description" : "A challenge has been returned.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            },
+            "deprecated" : true
+          },
+          "options" : {
+            "operationId" : "retrieveMobileOnlyChallengeCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/airlock-2fa/challenge/retrieve" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Airlock 2FA" ],
+            "summary" : "Returns the Offline QR Code challenge for Airlock 2FA.",
+            "operationId" : "retrieveOfflineQrCodeChallenge",
+            "responses" : {
+              "200" : {
+                "description" : "A challenge has been returned.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            },
+            "deprecated" : true
+          },
+          "options" : {
+            "operationId" : "retrieveOfflineQrCodeChallengeCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/airlock-2fa/devices/{id}/select" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Airlock 2FA" ],
+            "summary" : "Selects one of the available Airlock 2FA devices to use for transaction approval.",
+            "operationId" : "selectDevice",
+            "responses" : {
+              "200" : {
+                "description" : "Airlock 2FA device successfully selected, notification sent.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>AIRLOCK_2FA_DEVICE_CHOICE_FAILED</td>\n<td>Invalid ID selected. Retry with valid ID.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: <tt>AIRLOCK_2FA_DEVICE_CHOICE_REQUIRED</tt> (as documented <a href=\"#nextApprovalStepCodes\">here</a>).\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "selectDeviceCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          },
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "The ID of the selected Airlock 2FA device.",
+            "required" : true,
+            "schema" : {
+              "maxLength" : 50,
+              "minLength" : 1,
+              "type" : "string"
+            }
+          } ]
+        },
+        "/transaction-approval/airlock-2fa/offline" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Airlock 2FA" ],
+            "summary" : "Switch to Airlock 2FA offline transaction approval.",
+            "operationId" : "switchToOffline",
+            "responses" : {
+              "200" : {
+                "description" : "Successfully switched to offline transaction approval.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "Offline selection failed. The current transaction approval flow has been aborted.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "switchToOfflineCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/airlock-2fa/otp/check" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Airlock 2FA" ],
+            "summary" : "Verifies the provided OTP to validate an Airlock 2FA Offline QR Code challenge.",
+            "operationId" : "validateOfflineQrCode",
+            "requestBody" : {
+              "description" : "Contains the Airlock 2FA OTP.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/GenericOtpCheckRequest"
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "200" : {
+                "description" : "Transaction approval successful or further steps required.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>AIRLOCK_2FA_OTP_WRONG</td>\n<td>OTP could not be validated successfully. Retry with correct OTP.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: <tt>AIRLOCK_2FA_OTP_REQUIRED</tt> (as documented <a href=\"#nextApprovalStepCodes\">here</a>).\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>AIRLOCK_2FA_OTP_WRONG</td>\n<td>The OTP could not be validated successfully and no retries are allowed.</td>\n</tr>\n</table>\n</div>\n<br>The current transaction approval flow has been aborted.\n<br>Possible next step: none.\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "validateOfflineQrCodeCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/cronto/otp/check" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Cronto" ],
+            "summary" : "Verifies the submitted Cronto OTP.",
+            "operationId" : "checkCrontoOtp",
+            "requestBody" : {
+              "description" : "Contains the Cronto OTP.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/GenericOtpCheckRequest"
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "200" : {
+                "description" : "Transaction approval successful or further steps required.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>CRONTO_OTP_WRONG</td>\n<td>OTP could not be validated successfully. Retry with correct OTP.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: <tt>CRONTO_OTP_REQUIRED</tt> (as documented <a href=\"#nextApprovalStepCodes\">here</a>).\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>CRONTO_OTP_WRONG</td>\n<td>The OTP could not be validated successfully and no retries are allowed.</td>\n</tr>\n</table>\n</div>\n<br>The current transaction approval flow has been aborted.\n<br>Possible next step: none.\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "checkCrontoOtpCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/cronto/otp/poll" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Cronto" ],
+            "summary" : "Cronto Challenge Polling.",
+            "operationId" : "pollOnlineValidation_1",
+            "responses" : {
+              "200" : {
+                "description" : "Challenge not yet validated (retry later or check OTP manually), transaction approval successful or further steps required.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>CRONTO_OTP_WRONG</td>\n<td>The OTP could not be validated successfully.</td>\n</tr>\n<tr>\n<td>CANCELLED_BY_USER</td>\n<td>The process has been cancelled by the user in the app.</td>\n</tr>\n</table>\n</div>\n<br>The current transaction approval flow has been aborted.\n<br>Possible next step: none.\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "pollOnlineValidation_1CorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/cronto/challenge/retrieve" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Cronto" ],
+            "summary" : "Returns a challenge for Cronto.",
+            "operationId" : "retrieveChallenge",
+            "responses" : {
+              "200" : {
+                "description" : "A challenge has been returned.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            },
+            "deprecated" : true
+          },
+          "options" : {
+            "operationId" : "retrieveChallengeCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/cronto/push-devices/retrieve" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Cronto" ],
+            "summary" : "Retrieves the set of active Cronto push devices.",
+            "operationId" : "retrievePushDeviceChoices",
+            "responses" : {
+              "200" : {
+                "description" : "Available push devices retrieved.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            },
+            "deprecated" : true
+          },
+          "options" : {
+            "operationId" : "retrievePushDeviceChoicesCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/cronto/offline" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Cronto" ],
+            "summary" : "Selects offline transaction approval.",
+            "operationId" : "selectOfflineAuthentication",
+            "responses" : {
+              "200" : {
+                "description" : "Successfully selected an offline device.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "Offline selection failed. The current transaction approval flow has been aborted.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "selectOfflineAuthenticationCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/cronto/push-devices/{id}/select" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Cronto" ],
+            "summary" : "Selects one of the active push devices to which the push notification will be sent.",
+            "operationId" : "selectPushDevice",
+            "responses" : {
+              "200" : {
+                "description" : "Push device successfully selected, notification sent.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>CRONTO_DEVICE_CHOICE_FAILED</td>\n<td>Invalid ID selected. Retry with valid ID.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: <tt>CRONTO_DEVICE_CHOICE_REQUIRED</tt> (as documented <a href=\"#nextApprovalStepCodes\">here</a>).\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>CRONTO_DEVICE_CHOICE_FAILED</td>\n<td>Invalid ID selected.</td>\n</tr>\n</table>\n</div>\n<br>The current transaction approval flow has been aborted.\n<br>Possible next step: none.\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "selectPushDeviceCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          },
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "The ID of the selected push device.",
+            "required" : true,
+            "schema" : {
+              "maxLength" : 50,
+              "minLength" : 1,
+              "type" : "string"
+            }
+          } ]
+        },
+        "/transaction-approval/user/identify" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Username" ],
+            "summary" : "Identifies the transmitted username.",
+            "operationId" : "checkUsername",
+            "requestBody" : {
+              "description" : "Contains the username.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/TransactionApprovalUsernameCheckRequest"
+                  }
+                }
+              }
+            },
+            "responses" : {
+              "200" : {
+                "description" : "Transaction approval successful or further steps required.\n<br>Possible next step: <tt>PARAMETERS_REQUIRED</tt> (as documented <a href=\"#nextApprovalStepCodes\">here</a>).\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>USER_NOT_FOUND</td>\n<td>The user does not exist.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: <tt>USERNAME_REQUIRED</tt>.\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "The current transaction approval flow has been aborted.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "checkUsernameCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/matrix/check" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Matrix" ],
+            "summary" : "Verifies the submitted challenge response.",
+            "operationId" : "checkChallengeResponse",
+            "requestBody" : {
+              "description" : "Contains the challenge response(s).",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/TransactionApprovalMatrixChallengeCheckRequest"
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "200" : {
+                "description" : "Transaction approval successful or further steps required.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>MATRIX_RESPONSE_WRONG</td>\n<td>One or more responses could not be validated successfully. Retry again.<br>\nSince challenge coordinates may change after failed attempts (depending on configuration),\nthe new ones might have to be requested again.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: <tt>MATRIX_RESPONSE_REQUIRED</tt> (as documented <a href=\"#nextApprovalStepCodes\">here</a>).\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>MATRIX_RESPONSE_WRONG</td>\n<td>One or more responses could not be validated successfully.</td>\n</tr>\n<tr>\n<td>TOO_MANY_UNANSWERED_CHALLENGES</td>\n<td>Too many challenges were requested but not answered. Try again later.</td>\n</tr>\n</table>\n</div>\n<br>The current transaction approval flow has been aborted.\n<br>Possible next step: none.\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "checkChallengeResponseCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/matrix/challenge/retrieve" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Matrix" ],
+            "summary" : "Returns one or more challenges for matrix/index list transaction approval.",
+            "operationId" : "retrieveChallenge_1",
+            "responses" : {
+              "200" : {
+                "description" : "The challenge has been returned.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            },
+            "deprecated" : true
+          },
+          "options" : {
+            "operationId" : "retrieveChallenge_1CorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/message/acknowledge" : {
+          "post" : {
+            "tags" : [ "Transaction Approval" ],
+            "summary" : "Acknowledges a previously received message.",
+            "operationId" : "acknowledgeMessageId",
+            "responses" : {
+              "200" : {
+                "description" : "Message successfully acknowledged or further steps required (as documented <a href=\"#nextApprovalStepCodes\">here</a>).",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "acknowledgeMessageIdCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/mtan/otp/check" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "mTAN" ],
+            "summary" : "Checks the submitted mTAN OTP.",
+            "operationId" : "checkMtanOtp",
+            "requestBody" : {
+              "description" : "Request containing the mTAN OTP.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/GenericOtpCheckRequest"
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "200" : {
+                "description" : "Transaction approval successful or further steps required.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>MTAN_OTP_WRONG</td>\n<td>OTP could not be validated successfully. Retry with correct OTP.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: <tt>MTAN_OTP_REQUIRED</tt> (as documented <a href=\"#nextApprovalStepCodes\">here</a>).\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>MTAN_OTP_WRONG</td>\n<td>OTP could not be validated successfully and no retries are allowed.</td>\n</tr>\n<tr>\n<td>MTAN_OTP_EXPIRED</td>\n<td>The OTP has expired.</td>\n</tr>\n</table>\n</div>\n<br>The current transaction approval flow has been aborted.\n<br>Possible next step: none.\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "checkMtanOtpCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/mtan/otp/resend" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "mTAN" ],
+            "summary" : "Resends the mTAN OTP by SMS.",
+            "operationId" : "resendMtanOtp",
+            "responses" : {
+              "200" : {
+                "description" : "The OTP has been resent.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>MTAN_OTP_RESEND_REFUSED</td>\n<td>The OTP could not be resent.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: <tt>MTAN_OTP_REQUIRED</tt> (as documented <a href=\"#nextApprovalStepCodes\">here</a>).\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "Resend failed. The current transaction approval flow has been aborted.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "resendMtanOtpCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/mtan/tokens/retrieve" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "mTAN" ],
+            "summary" : "Retrieves the set of active mTAN tokens.",
+            "operationId" : "retrieveMtanTokens",
+            "responses" : {
+              "200" : {
+                "description" : "Available mTAN tokens retrieved.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            },
+            "deprecated" : true
+          },
+          "options" : {
+            "operationId" : "retrieveMtanTokensCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/mtan/otp/resend-info/retrieve" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "mTAN" ],
+            "summary" : "Returns whether a new OTP can be resent by SMS.",
+            "operationId" : "retrieveResendInfo",
+            "responses" : {
+              "200" : {
+                "description" : "Returns information about a possible OTP resend.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            },
+            "deprecated" : true
+          },
+          "options" : {
+            "operationId" : "retrieveResendInfoCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/mtan/tokens/{id}/select" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "mTAN" ],
+            "summary" : "Selects one of the active mTAN tokens (phone numbers) for sending the OTP to.",
+            "operationId" : "selectMtanToken",
+            "responses" : {
+              "200" : {
+                "description" : "mTAN token successfully selected, OTP sent.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>MTAN_TOKEN_CHOICE_FAILED</td>\n<td>Invalid mTAN token ID. Retry with valid ID.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: <tt>MTAN_TOKEN_CHOICE_REQUIRED</tt> (as documented <a href=\"#nextApprovalStepCodes\">here</a>).\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "Selection failed. The current transaction approval flow has been aborted.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "selectMtanTokenCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          },
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "the ID of the selected mTAN token.",
+            "required" : true,
+            "schema" : {
+              "maxLength" : 50,
+              "minLength" : 1,
+              "type" : "string"
+            }
+          } ]
+        },
+        "/transaction-approval/otp/check" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Generic OTP" ],
+            "summary" : "Checks the submitted OTP.",
+            "operationId" : "checkOtp",
+            "requestBody" : {
+              "description" : "Request containing the OTP.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/GenericOtpCheckRequest"
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "200" : {
+                "description" : "Transaction successfully approved or further steps required.<br>Possible next step: <tt>NEXT_OTP_REQUIRED</tt> (as documented <a href=\"#nextApprovalStepCodes\">here</a>).",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>OTP_WRONG</td>\n<td>The OTP could not be validated successfully.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: <tt>OTP_REQUIRED</tt> (as documented <a href=\"#nextApprovalStepCodes\">here</a>).\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "403" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>OTP_WRONG</td>\n<td>The OTP could not be validated successfully.</td>\n</tr>\n<tr>\n<td>OTP_EXPIRED</td>\n<td>The OTP has expired.</td>\n</tr>\n</table>\n</div>\n<br>The current  transaction approval flow has been aborted.\n<br>Possible next step: none.\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "checkOtpCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/selection/options/retrieve" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Selection" ],
+            "summary" : "Retrieval of available options for selection.",
+            "operationId" : "retrieveOptions",
+            "responses" : {
+              "200" : {
+                "description" : "Available selection options retrieved.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            },
+            "deprecated" : true
+          },
+          "options" : {
+            "operationId" : "retrieveOptionsCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          }
+        },
+        "/transaction-approval/selection/options/{id}/select" : {
+          "post" : {
+            "tags" : [ "Transaction Approval", "Selection" ],
+            "summary" : "Selects the given option if available.",
+            "operationId" : "selectOption",
+            "responses" : {
+              "200" : {
+                "description" : "Selected the chosen step and requires next step actions.",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "<div class=\"iam-error-code\"><table>\n<tr>\n<td>SELECTION_FAILED</td>\n<td>The selected option is not available.</td>\n</tr>\n</table>\n</div>\n<br>Possible next step: <tt>SELECTION_REQUIRED</tt> (as documented <a href=\"#nextApprovalStepCodes\">here</a>).\n",
+                "content" : {
+                  "application/vnd.api+json" : { },
+                  "application/json" : { }
+                }
+              }
+            }
+          },
+          "options" : {
+            "operationId" : "selectOptionCorsPreflight",
+            "responses" : {
+              "default" : {
+                "description" : "default response"
+              }
+            }
+          },
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "option to select.",
+            "required" : true,
+            "schema" : {
+              "maxLength" : 1000,
+              "minLength" : 1,
+              "type" : "string"
+            }
+          } ]
+        }
+      },
+      "components" : {
+        "schemas" : {
+          "TransactionApprovalParameterRequest" : {
+            "required" : [ "messageParameters" ],
+            "type" : "object",
+            "properties" : {
+              "authTokenId" : {
+                "maxLength" : 100000,
+                "minLength" : 0,
+                "type" : "string",
+                "description" : "The id that will be used to determine which devices can or can not be used for the further transaction approval process.",
+                "nullable" : true
+              },
+              "messageParameters" : {
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "string",
+                  "description" : "Parameters that will be used to generate the transaction approval message."
+                },
+                "description" : "Parameters that will be used to generate the transaction approval message."
+              }
+            }
+          },
+          "GenericOtpCheckRequest" : {
+            "required" : [ "otp" ],
+            "type" : "object",
+            "properties" : {
+              "otp" : {
+                "maxLength" : 200,
+                "minLength" : 1,
+                "type" : "string"
+              }
+            }
+          },
+          "TransactionApprovalUsernameCheckRequest" : {
+            "required" : [ "username" ],
+            "type" : "object",
+            "properties" : {
+              "username" : {
+                "maxLength" : 500,
+                "minLength" : 1,
+                "type" : "string"
+              }
+            }
+          },
+          "TransactionApprovalMatrixChallengeCheckRequest" : {
+            "required" : [ "challengeResponse" ],
+            "type" : "object",
+            "properties" : {
+              "challengeResponse" : {
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "string",
+                  "description" : "Map of the original challenge coordinate to the respective challenge response."
+                },
+                "description" : "Map of the original challenge coordinate to the respective challenge response."
+              }
+            }
+          }
+        }
+      }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: transaction-approval-openapi-configmap
+  namespace: '{{.Values.namespace}}'
