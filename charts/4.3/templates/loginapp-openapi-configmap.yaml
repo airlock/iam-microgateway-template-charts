@@ -2,7 +2,7 @@
 apiVersion: v1
 data:
   openapi.json: "{\n    \"openapi\": \"3.0.1\",\n    \"info\": {\n        \"title\":
-    \"Airlock IAM Loginapp REST API\",\n        \"version\": \"8.3.1\"\n    },\n    \"servers\":
+    \"Airlock IAM Loginapp REST API\",\n        \"version\": \"8.3.2\"\n    },\n    \"servers\":
     [\n        {\n            \"url\": \"{{ .Values.global.path.loginapp }}/rest\"\n
     \       }\n    ],\n    \"paths\": {\n        \"/oauth2/authorization-servers/{authorizationServerId}/session\":
     {\n            \"get\": {\n                \"tags\": [\n                    \"OAuth
