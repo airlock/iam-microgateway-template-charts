@@ -1,0 +1,83 @@
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: SidecarGateway
+metadata:
+  name: iam-sidecargateway
+spec:
+  podSelector:
+    matchLabels:
+{{ toYaml .Values.global.iamPodLabels  | indent 6 }}
+  applications:
+    # Airlock IAM
+    - containerPort: {{ .Values.global.iamHttpsPort }}
+      envoyHTTPFilterRefs:
+        prepend:
+          - name: iam-http-filter-secure-cookie-rewrite
+      routes:
+        {{- range .Values.unsecuredPaths }}
+        - pathPrefix: {{ . }}
+          unsecured: { }
+        {{- end }}
+        {{- if has "adminapp" .Values.global.modules }}
+        - pathPrefix: {{ .Values.global.path.adminapp }}/editConfig
+          secured:
+            contentSecurityRef:
+              name: adminapp-config-editor-content-security
+        - pathPrefix: {{ .Values.global.path.adminapp }}/rest
+          secured:
+            contentSecurityRef:
+              name: adminapp-rest-content-security
+        - pathPrefix: {{ .Values.global.path.adminapp }}
+          secured:
+            contentSecurityRef:
+              name: adminapp-content-security
+        {{- end }}
+        {{- if has "service-container" .Values.global.modules }}
+        - pathPrefix: {{ .Values.global.path.serviceContainer }}
+          secured:
+            contentSecurityRef:
+              name: service-container-content-security
+        {{- end }}
+        {{- if has "loginapp" .Values.global.modules }}
+        - pathPrefix: {{ .Values.global.path.loginapp }}/rest/protected
+          secured:
+            contentSecurityRef:
+              name: loginapp-rest-protected-content-security
+        - pathPrefix: {{ .Values.global.path.loginapp }}/rest/public
+          secured:
+            contentSecurityRef:
+              name: loginapp-rest-public-content-security
+        - pathPrefix: {{ .Values.global.path.loginapp }}
+          secured:
+            contentSecurityRef:
+              name: loginapp-content-security
+        {{- end }}
+        {{- if has "transaction-approval" .Values.global.modules }}
+        - pathPrefix: {{ .Values.global.path.transactionApproval }}/rest
+          secured:
+            contentSecurityRef:
+              name: transaction-approval-content-security
+        {{- end }}
+        - pathPrefix: /
+          secured:
+            contentSecurityRef:
+              name: unspecified-path-content-security
+      upstream:
+        tls:
+          enable: true
+      downstream:
+        tls:
+          enable: true
+          secretRef:
+            name: {{ .Values.certificate.secretName }}
+    {{- if .Values.global.metricsPort }}
+    - containerPort: {{ .Values.global.metricsPort }}
+      routes:
+      - pathPrefix: /
+        unsecured: {}
+    {{- end }}
+    {{- if .Values.global.healthPort }}
+    - containerPort: {{ .Values.global.healthPort }}
+      routes:
+      - pathPrefix: /
+        unsecured: {}
+    {{- end }}

@@ -1,0 +1,63 @@
+## @section Airlock Microgateway Parameters
+## Configuration of the Airlock Microgateway that protects Airlock IAM.
+##
+
+## @param certificate:
+##
+certificate:
+  ## @param certificate.secretName: Identifier of the certificate secret
+  ##
+  secretName: "airlock-iam-service-downstream-cert"
+  ## @param certificate.issuerName: Name of the issuer of the secret. Default is self-signed.
+  ##
+  issuerName: "selfsigned-issuer"
+  ## @param certificate.commonName:
+  ##
+  commonName: ""
+  ## @param certificate.dnsNames:
+  ##
+  dnsNames: [ ]
+
+
+
+## @param unsecuredPaths: A list of URL paths that should be exposed, but not protected by Airlock Microgateway
+##
+unsecuredPaths: [ ]
+
+global:
+  ## @param global.microgatewayVersion: The Airlock Microgateway version this template is adapted for.
+  ## Can be used to enable backwards-compatibility with older versions of Airlock Microgateway
+  microgatewayVersion: '4.5'
+  ## @param global.iamPodLabels: The labels define on to which Pod Microgateway attaches to run as a Sidecar.
+  ##
+  iamPodLabels:
+    app: iam
+  ## @param global.instanceName: What name the IAM instance should have.
+  ##
+  instanceName: auth
+  ## @param global.modules: The selected Modules will be exposed and protected by Airlock Microgateway.
+  ##
+  modules: ['adminapp', 'loginapp', 'transaction-approval', 'service-container']
+  ## @param global.path: Defines the path under which each module can be accessed.
+  ## This is applied to the IAM instance properties values "iam.*.url.path", as well as the SidecarGateway path prefixes.
+  ##
+  path:
+    adminapp: /auth-admin
+    loginapp: /auth-login
+    transactionApproval: /auth-transaction-approval
+    apiPolicyService: /auth-api-policy-service
+    serviceContainer: /auth-servicecontainer
+  ## @param global.iamHttpsPort: The port, on which Airlock IAM endpoints are exposed. The default is 8443.
+  ## Must be unique among iamHttpsPort, metricsPort and healthPort. Must be set.
+  ##
+  iamHttpsPort: 8443
+  ## @param global.metricsPort: The port, on which metrics endpoints are exposed.
+  ## This port will be exposed unprotected and access must be controlled with network policies.
+  ## Must be unique among iamHttpsPort, metricsPort and healthPort.
+  ##
+  metricsPort: false
+  ## @param global.healthPort: The port, on which health endpoints are exposed.
+  ## This port will be exposed unprotected and access must be controlled with network policies.
+  ## Must be unique among iamHttpsPort, metricsPort and healthPort.
+  ##
+  healthPort: false

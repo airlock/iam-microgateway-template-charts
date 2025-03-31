@@ -1,0 +1,38 @@
+{{- if has "transaction-approval" .Values.global.modules }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: DenyRules
+metadata:
+  name: transaction-approval-deny-rules
+spec:
+  request:
+    builtIn:
+      settings:
+        level: Strict
+        threatHandlingMode: Block
+# SSRF deny rule introduced in Microgateway 4.4
+{{- if semverCompare ">=4.4" .Values.global.microgatewayVersion }}
+      overrides:
+        - conditions:
+            ruleKeys:
+              - SSRF
+            types:
+              - JSON
+          settings:
+            level: Unfiltered
+{{- end }}
+      exceptions:
+      - ruleKeys:
+        - "SQL"
+        blockedData:
+          json:
+            jsonPath: "$.username"
+      - ruleKeys:
+        - "XSS"
+        blockedData:
+          parameter:
+            name:
+              matcher:
+                regex: "^filter$"
+                ignoreCase: false
+
+{{- end }}
