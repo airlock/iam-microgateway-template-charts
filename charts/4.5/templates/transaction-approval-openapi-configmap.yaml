@@ -2,7 +2,7 @@
 apiVersion: v1
 data:
   openapi.json: '{"openapi":"3.0.1","info":{"title":"Airlock IAM Transaction Approval
-    REST API","version":"8.4.0","x-logo":{"url":"./airlock-logo.png","backgroundColor":"#39373A"}},"servers":[{"url":"{{
+    REST API","version":"8.4.1","x-logo":{"url":"./airlock-logo.png","backgroundColor":"#39373A"}},"servers":[{"url":"{{
     .Values.global.path.transactionApproval }}/rest"}],"tags":[{"name":"transaction-approval-rest-docs-openapi-intermediate_other","x-displayName":"other"},{"name":"Flow
     Control","x-displayName":"Flow Control"},{"name":"Message Parameters","x-displayName":"Message
     Parameters"},{"name":"Airlock 2FA","x-displayName":"Airlock 2FA"},{"name":"Cronto","x-displayName":"Cronto"},{"name":"Email

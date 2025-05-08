@@ -1,7 +1,7 @@
 {{- if has "adminapp" .Values.global.modules }}
 apiVersion: v1
 data:
-  openapi.json: '{"openapi":"3.0.1","info":{"title":"Airlock IAM Adminapp REST API","version":"8.4.0","x-jerseyapp":"base","x-logo":{"url":"./airlock-logo.png","backgroundColor":"#39373A"}},"servers":[{"url":"{{
+  openapi.json: '{"openapi":"3.0.1","info":{"title":"Airlock IAM Adminapp REST API","version":"8.4.1","x-jerseyapp":"base","x-logo":{"url":"./airlock-logo.png","backgroundColor":"#39373A"}},"servers":[{"url":"{{
     .Values.global.path.adminapp }}/rest"}],"tags":[{"name":"/_other","x-displayName":"other"},{"name":"/_Passwords","x-displayName":"Passwords"},{"name":"/_License","x-displayName":"License"},{"name":"/_Logs","x-displayName":"Logs"},{"name":"/_Maintenance
     Messages","x-displayName":"Maintenance Messages"},{"name":"/_SMS/mTAN","x-displayName":"SMS/mTAN"},{"name":"/_System","x-displayName":"System"},{"name":"/_Administrators","x-displayName":"Administrators"},{"name":"/_Context
     Data","x-displayName":"Context Data"},{"name":"/_User Locking","x-displayName":"User
@@ -2380,12 +2380,12 @@ data:
     the server always returns a valid ID value, it MAY accept a client-generated ID
     in a request to create\na resource."},"relationships":{"$ref":"#/components/schemas/Relationships"},"links":{"$ref":"#/components/schemas/Links"},"meta":{"$ref":"#/components/schemas/Meta"},"type":{"type":"string","description":"Identifies
     the type of this resource; type and id together make a resource unique.","enum":["user.token.airlock-2fa.activation-letter"]},"attributes":{"$ref":"#/components/schemas/Airlock2FAActivationLetterData"}},"description":"A
-    collection of included resources to which the primary data refers."},"Airlock2FAConfidentialActivationData":{"required":["activationCode","activationCodeShort","activationQrCode"],"type":"object","properties":{"activationCode":{"type":"string","description":"Complete
+    collection of included resources to which the primary data refers."},"Airlock2FAConfidentialActivationData":{"required":["activationCode","activationQrCode"],"type":"object","properties":{"activationCode":{"type":"string","description":"Complete
     activation code."},"activationQrCode":{"type":"string","description":"Activation
     code as base64-encoded PNG representing the QR code."},"activationCodeShort":{"type":"string","description":"Human-readable
-    short form of the activation code."}},"description":"Confidential activation code
-    required for activating an Airlock 2FA device. Only returned in case the caller
-    has the right to view Airlock 2FA activation secrets.","nullable":true},"Airlock2FAActivationLetterOrderData":{"required":["orderedAt","orderedBy"],"type":"object","properties":{"orderedAt":{"type":"string","description":"The
+    short form of the activation code.","nullable":true}},"description":"Confidential
+    activation code required for activating an Airlock 2FA device. Only returned in
+    case the caller has the right to view Airlock 2FA activation secrets.","nullable":true},"Airlock2FAActivationLetterOrderData":{"required":["orderedAt","orderedBy"],"type":"object","properties":{"orderedAt":{"type":"string","description":"The
     creation date of the activation letter order.","format":"date-time"},"orderedBy":{"type":"string","description":"Process
     or admin responsible for the creation of this activation letter order."}},"description":"Attributes
     of this resource."},"Airlock2FAActivationLetterOrderDataCollectionDocument":{"type":"object","properties":{"included":{"type":"array","description":"A
