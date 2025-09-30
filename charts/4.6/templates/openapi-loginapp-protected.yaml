@@ -1,0 +1,16 @@
+{{- if has "loginapp" .Values.global.modules }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: OpenAPI
+metadata:
+  name: loginapp-protected-openapi
+spec:
+  settings:
+    schema:
+      source:
+        configMapRef:
+          name: loginapp-protected-openapi-configmap
+    threatHandlingMode: Block
+  response:
+    secured: { }
+
+{{- end }}

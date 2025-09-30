@@ -1,0 +1,9 @@
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: Telemetry
+metadata:
+  name: iam-telemetry
+spec:
+  correlation:
+    idSource:
+      header:
+        name: "X-Correlation-Id"
