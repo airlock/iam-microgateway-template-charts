@@ -15,4 +15,4 @@ name: iam-microgateway-templates
 icon: https://raw.githubusercontent.com/airlock/iam-helm-charts/main/media/Airlock_IAM_Icon.svg
 sources:
   - https://github.com/airlock/iam-microgateway-template-charts
-version: 0.7.0
+version: 0.7.1

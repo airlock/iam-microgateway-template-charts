@@ -1,7 +1,7 @@
 {{- if has "loginapp" .Values.global.modules }}
 apiVersion: v1
 data:
-  openapi.json: '{"openapi":"3.0.1","info":{"title":"Airlock IAM Loginapp REST API","version":"8.5.0","x-jerseyapp":"base","x-comp-prefix":"Basic"},"servers":[{"url":"{{
+  openapi.json: '{"openapi":"3.0.1","info":{"title":"Airlock IAM Loginapp REST API","version":"8.5.1-1002.449bf03","x-jerseyapp":"base","x-comp-prefix":"Basic"},"servers":[{"url":"{{
     .Values.global.path.loginapp }}/rest"}],"tags":[{"name":"/protected_Cronto","description":"Cronto
     is a secure authentication method that uses a color QR code (Cronto image) to
     transmit encrypted transaction details or login information to the user’s mobile

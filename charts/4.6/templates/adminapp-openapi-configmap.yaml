@@ -1,7 +1,7 @@
 {{- if has "adminapp" .Values.global.modules }}
 apiVersion: v1
 data:
-  openapi.json: '{"openapi":"3.0.1","info":{"title":"Airlock IAM Adminapp REST API","version":"8.5.0","x-jerseyapp":"base"},"servers":[{"url":"{{
+  openapi.json: '{"openapi":"3.0.1","info":{"title":"Airlock IAM Adminapp REST API","version":"8.5.1-1002.449bf03","x-jerseyapp":"base"},"servers":[{"url":"{{
     .Values.global.path.adminapp }}/rest"}],"tags":[{"name":"/_Airlock 2FA","description":"Airlock
     2FA is a secure and flexible two-factor authentication solution integrated into
     Airlock IAM. It includes a ready-to-use mobile app and offers various authentication

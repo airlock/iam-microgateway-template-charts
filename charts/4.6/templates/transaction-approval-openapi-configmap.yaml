@@ -2,7 +2,7 @@
 apiVersion: v1
 data:
   openapi.json: '{"openapi":"3.0.1","info":{"title":"Airlock IAM Transaction Approval
-    REST API","version":"8.5.0"},"servers":[{"url":"{{ .Values.global.path.transactionApproval
+    REST API","version":"8.5.1-1002.449bf03"},"servers":[{"url":"{{ .Values.global.path.transactionApproval
     }}/rest"}],"tags":[{"name":"transaction-approval-rest-docs-openapi-base_Airlock
     2FA","x-displayName":"Airlock 2FA","description":"Airlock 2FA is a secure and
     flexible two-factor authentication solution integrated into Airlock IAM. It includes
