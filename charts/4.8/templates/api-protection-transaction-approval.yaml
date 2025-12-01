@@ -1,0 +1,12 @@
+{{- if has "transaction-approval" .Values.global.modules }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: APIProtection
+metadata:
+  name: iam-transaction-approval-rest-api-protection
+spec:
+  policies:
+  - name: Transaction Approval API
+    openAPIRef:
+      name: transaction-approval-openapi
+
+{{- end }}

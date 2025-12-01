@@ -1,0 +1,22 @@
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: Parser
+metadata:
+  name: iam-parser
+spec:
+  request:
+    defaultContentType: "application/json"
+    custom:
+      rules:
+        - requestConditions:
+            mediaType:
+              matcher:
+                regex: ".*json.*"
+            header:
+              name:
+                matcher:
+                  exact: "Content-Length"
+              value:
+                matcher:
+                  exact: "0"
+          action:
+            skip: {}

@@ -1,0 +1,79 @@
+{{- if has "service-container" .Values.global.modules }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: DenyRules
+metadata:
+  name: servicecontainer-deny-rules
+spec:
+  request:
+    builtIn:
+      settings:
+        level: Strict
+        threatHandlingMode: Block
+      exceptions:
+      - ruleKeys:
+        - "SQL"
+        blockedData:
+          parameter:
+            name:
+              matcher:
+                regex: "^v-loc$"
+                ignoreCase: false
+        requestConditions:
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.serviceContainer }}/serviceContainer$"
+              ignoreCase: false
+      - ruleKeys:
+        - "XSS"
+        blockedData:
+          parameter:
+            name:
+              matcher:
+                regex: "^v-loc$"
+                ignoreCase: false
+        requestConditions:
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.serviceContainer }}/serviceContainer$"
+              ignoreCase: false
+      - ruleKeys:
+        - "XSS"
+        blockedData:
+          parameter:
+            name:
+              matcher:
+                regex: "^sso$"
+                ignoreCase: false
+        requestConditions:
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.serviceContainer }}/serviceContainer$"
+              ignoreCase: false
+      - ruleKeys:
+        - "HPP"
+        blockedData:
+          parameter:
+            name:
+              matcher:
+                regex: "^v-loc$"
+                ignoreCase: false
+        requestConditions:
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.serviceContainer }}/serviceContainer$"
+              ignoreCase: false
+      - ruleKeys:
+        - "SSRF"
+        blockedData:
+          parameter:
+            name:
+              matcher:
+                regex: "^v-loc$"
+                ignoreCase: false
+        requestConditions:
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.serviceContainer }}/serviceContainer$"
+              ignoreCase: false
+
+{{- end }}

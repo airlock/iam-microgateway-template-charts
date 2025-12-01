@@ -1,0 +1,19 @@
+{{- if has "adminapp" .Values.global.modules }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: ContentSecurity
+metadata:
+  name: adminapp-rest-content-security
+spec:
+  parserRef:
+    name: iam-parser
+  limitsRef:
+    name: iam-limits
+  filter:
+    denyRulesRef:
+      name: adminapp-rest-deny-rules
+  apiProtectionRef:
+    name: iam-adminapp-rest-api-protection
+  headerRewritesRef:
+      name: iam-adminapp-rest-header-rewrites
+
+{{- end }}

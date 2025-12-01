@@ -1,0 +1,12 @@
+{{- if has "transaction-approval" .Values.global.modules }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: HeaderRewrites
+metadata:
+  name: iam-transaction-approval-header-rewrites
+spec:
+  response:
+    add:
+      builtIn:
+        csp: true
+
+{{- end }}

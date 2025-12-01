@@ -1,0 +1,16 @@
+{{- if has "transaction-approval" .Values.global.modules }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: OpenAPI
+metadata:
+  name: transaction-approval-openapi
+spec:
+  settings:
+    schema:
+      source:
+        configMapRef:
+          name: transaction-approval-openapi-configmap
+    threatHandlingMode: Block
+  response:
+    secured: { }
+
+{{- end }}
