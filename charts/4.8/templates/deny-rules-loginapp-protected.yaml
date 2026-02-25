@@ -11,11 +11,6 @@ spec:
         threatHandlingMode: Block
       exceptions:
       - ruleKeys:
-        - "SCANNING"
-        blockedData:
-          json:
-            jsonPath: "$['password','oldPassword','newPassword']"
-      - ruleKeys:
         - "SQL"
         blockedData:
           json:
@@ -66,6 +61,18 @@ spec:
         - "SQL"
         blockedData:
           json:
+            jsonPath: "$.publicKeyCredential.response.clientDataJSON"
+        requestConditions:
+          method:
+          - "POST"
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.loginapp }}/rest/protected/self-service/fido/registration/attestation-response/check/?$"
+              ignoreCase: false
+      - ruleKeys:
+        - "SQL"
+        blockedData:
+          json:
             jsonPath: "$.context"
         requestConditions:
           path:
@@ -99,14 +106,6 @@ spec:
       - ruleKeys:
         - "SQL"
         blockedData:
-          parameter:
-            name:
-              matcher:
-                regex: "^(?:sso|ticket|representation)$"
-                ignoreCase: false
-      - ruleKeys:
-        - "SQL"
-        blockedData:
           json:
             value:
               matcher:
@@ -118,7 +117,7 @@ spec:
           - "POST"
           path:
             matcher:
-              regex: "^{{ .Values.global.path.loginapp }}/rest/(public|protected)/self-service/approval/fido/assertion-response/check/?$"
+              regex: "^{{ .Values.global.path.loginapp }}/rest/protected/self-service/approval/fido/assertion-response/check/?$"
               ignoreCase: false
       - ruleKeys:
         - "SQL"
@@ -134,7 +133,7 @@ spec:
           - "POST"
           path:
             matcher:
-              regex: "^{{ .Values.global.path.loginapp }}/rest/(public|protected)/self-service/approval/fido/assertion-response/check/?$"
+              regex: "^{{ .Values.global.path.loginapp }}/rest/protected/self-service/approval/fido/assertion-response/check/?$"
               ignoreCase: false
       - ruleKeys:
         - "SQL"
@@ -150,7 +149,7 @@ spec:
           - "POST"
           path:
             matcher:
-              regex: "^{{ .Values.global.path.loginapp }}/rest/(public|protected)/self-service/approval/fido/assertion-response/check/?$"
+              regex: "^{{ .Values.global.path.loginapp }}/rest/protected/self-service/approval/fido/assertion-response/check/?$"
               ignoreCase: false
       - ruleKeys:
         - "SQL"
@@ -166,7 +165,7 @@ spec:
           - "POST"
           path:
             matcher:
-              regex: "^{{ .Values.global.path.loginapp }}/rest/(public|protected)/self-service/approval/fido/assertion-response/check/?$"
+              regex: "^{{ .Values.global.path.loginapp }}/rest/protected/self-service/approval/fido/assertion-response/check/?$"
               ignoreCase: false
       - ruleKeys:
         - "SQL"
@@ -184,56 +183,10 @@ spec:
           json:
             jsonPath: "$.data.email"
       - ruleKeys:
-        - "SQL"
-        blockedData:
-          json:
-            jsonPath: "$.queryString"
-        requestConditions:
-          path:
-            matcher:
-              regex: "^{{ .Values.global.path.loginapp }}/rest/protected/self-service/oauth2/client/authorization/check/?$"
-              ignoreCase: false
-      - ruleKeys:
-        - "SQL"
-        blockedData:
-          header:
-            name:
-              matcher:
-                regex: "^X-Captcha-Solution$"
-      - ruleKeys:
         - "XSS"
         blockedData:
           json:
             jsonPath: "$['password','oldPassword','newPassword']"
-      - ruleKeys:
-        - "XSS"
-        blockedData:
-          parameter:
-            name:
-              matcher:
-                regex: "^(?:sso|ticket|representation)$"
-                ignoreCase: false
-      - ruleKeys:
-        - "XSS"
-        blockedData:
-          parameter:
-            name:
-              matcher:
-                regex: "^Location$"
-                ignoreCase: false
-      - ruleKeys:
-        - "XSS"
-        blockedData:
-          parameter:
-            name:
-              matcher:
-                regex: "^filter$"
-                ignoreCase: false
-        requestConditions:
-          path:
-            matcher:
-              regex: "^{{ .Values.global.path.loginapp }}/rest/(?:public|protected)/"
-              ignoreCase: false
       - ruleKeys:
         - "XSS"
         blockedData:
@@ -282,34 +235,10 @@ spec:
           json:
             jsonPath: "$['password','oldPassword','newPassword']"
       - ruleKeys:
-        - "UNIXCMD"
-        blockedData:
-          parameter:
-            name:
-              matcher:
-                regex: "^(?:sso|ticket|representation)$"
-                ignoreCase: false
-      - ruleKeys:
-        - "UNIXCMD"
-        blockedData:
-          parameter:
-            name:
-              matcher:
-                regex: "^Location$"
-                ignoreCase: false
-      - ruleKeys:
         - "WINCMD"
         blockedData:
           json:
             jsonPath: "$['password','oldPassword','newPassword']"
-      - ruleKeys:
-        - "WINCMD"
-        blockedData:
-          parameter:
-            name:
-              matcher:
-                regex: "^(?:sso|ticket|representation)$"
-                ignoreCase: false
       - ruleKeys:
         - "LDAP"
         blockedData:
@@ -333,22 +262,6 @@ spec:
         blockedData:
           json:
             jsonPath: "$['password','oldPassword','newPassword']"
-      - ruleKeys:
-        - "IDOR"
-        blockedData:
-          parameter:
-            name:
-              matcher:
-                regex: "^(?:Signature|SAMLRequest|SAMLResponse|RelayState|SAMLart|SigAlg)$"
-                ignoreCase: false
-      - ruleKeys:
-        - "IDOR"
-        blockedData:
-          parameter:
-            name:
-              matcher:
-                regex: "^(?:sso|ticket|representation)$"
-                ignoreCase: false
       - ruleKeys:
         - "IDOR"
         blockedData:
@@ -482,33 +395,14 @@ spec:
               regex: "^{{ .Values.global.path.loginapp }}/rest/protected/self-service/oauth2/client/authorization/check/?$"
               ignoreCase: false
       - ruleKeys:
-        - "HPP"
-        blockedData:
-          parameter:
-            name:
-              matcher:
-                regex: "^(?:sso|ticket|representation)$"
-                ignoreCase: false
-      - ruleKeys:
-        - "HPP"
-        blockedData:
-          parameter:
-            name:
-              matcher:
-                regex: "^Location$"
-                ignoreCase: false
-      - ruleKeys:
         - "EXPLOIT"
         blockedData:
           json:
             jsonPath: "$['password','oldPassword','newPassword']"
       - ruleKeys:
-        - "SSRF"
+        - "SCANNING"
         blockedData:
-          parameter:
-            name:
-              matcher:
-                regex: "^(?:Signature|SAMLRequest|SAMLResponse|RelayState|SAMLart|SigAlg)$"
-                ignoreCase: false
+          json:
+            jsonPath: "$['password','oldPassword','newPassword']"
 
 {{- end }}

@@ -2,13 +2,13 @@
 apiVersion: microgateway.airlock.com/v1alpha1
 kind: OpenAPI
 metadata:
-  name: loginapp-oauth2-openapi
+  name: loginapp-openapi
 spec:
   settings:
     schema:
       source:
         configMapRef:
-          name: loginapp-oauth2-openapi-configmap
+          name: loginapp-openapi-configmap
     threatHandlingMode: Block
   response:
     secured: { }

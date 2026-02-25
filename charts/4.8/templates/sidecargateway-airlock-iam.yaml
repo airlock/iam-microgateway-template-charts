@@ -9,8 +9,6 @@ spec:
   applications:
     # Airlock IAM
     - containerPort: {{ .Values.global.iamHttpsPort }}
-      telemetryRef:
-        name: iam-telemetry
       envoyHTTPFilterRefs:
         prepend:
           - name: iam-http-filter-secure-cookie-rewrite
@@ -48,10 +46,6 @@ spec:
           secured:
             contentSecurityRef:
               name: loginapp-rest-public-content-security
-        - pathPrefix: {{ .Values.global.path.loginapp }}/rest/oauth2
-          secured:
-            contentSecurityRef:
-              name: loginapp-rest-oauth2-content-security
         - pathPrefix: {{ .Values.global.path.loginapp }}
           secured:
             contentSecurityRef:

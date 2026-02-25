@@ -37,19 +37,6 @@ spec:
               regex: "^{{ .Values.global.path.serviceContainer }}/serviceContainer$"
               ignoreCase: false
       - ruleKeys:
-        - "XSS"
-        blockedData:
-          parameter:
-            name:
-              matcher:
-                regex: "^sso$"
-                ignoreCase: false
-        requestConditions:
-          path:
-            matcher:
-              regex: "^{{ .Values.global.path.serviceContainer }}/serviceContainer$"
-              ignoreCase: false
-      - ruleKeys:
         - "HPP"
         blockedData:
           parameter:
@@ -62,6 +49,7 @@ spec:
             matcher:
               regex: "^{{ .Values.global.path.serviceContainer }}/serviceContainer$"
               ignoreCase: false
+{{- if semverCompare ">=4.4" .Values.global.microgatewayVersion }}
       - ruleKeys:
         - "SSRF"
         blockedData:
@@ -75,5 +63,6 @@ spec:
             matcher:
               regex: "^{{ .Values.global.path.serviceContainer }}/serviceContainer$"
               ignoreCase: false
+{{- end }}
 
 {{- end }}
