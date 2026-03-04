@@ -9,7 +9,6 @@ spec:
       settings:
         level: Strict
         threatHandlingMode: Block
-
       exceptions:
       - ruleKeys:
         - "SQL"
@@ -227,7 +226,6 @@ spec:
         blockedData:
           json:
             jsonPath: "$['password','oldPassword','newPassword']"
-{{- if semverCompare ">=4.4" .Values.global.microgatewayVersion }}
       - ruleKeys:
         - "SSRF"
         blockedData:
@@ -278,6 +276,5 @@ spec:
         requestConditions:
           method:
           - "POST"
-{{- end }}
 
 {{- end }}
