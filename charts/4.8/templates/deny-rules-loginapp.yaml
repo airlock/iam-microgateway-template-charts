@@ -519,6 +519,36 @@ spec:
       - ruleKeys:
         - "SQL"
         blockedData:
+          parameter:
+            name:
+              matcher:
+                regex: "^consent_token$"
+                ignoreCase: false
+        requestConditions:
+          method:
+          - "GET"
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.loginapp }}/oauth2-confirm/?"
+              ignoreCase: false
+      - ruleKeys:
+        - "SQL"
+        blockedData:
+          parameter:
+            name:
+              matcher:
+                regex: "^consent_token$"
+                ignoreCase: false
+        requestConditions:
+          method:
+          - "GET"
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.loginapp }}/ui/app/auth/oauth2/consent/confirm/?"
+              ignoreCase: false
+      - ruleKeys:
+        - "SQL"
+        blockedData:
           header:
             name:
               matcher:

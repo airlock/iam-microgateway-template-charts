@@ -18,8 +18,6 @@ certificate:
   ##
   dnsNames: [ ]
 
-
-
 ## @param unsecuredPaths: A list of URL paths that should be exposed, but not protected by Airlock Microgateway
 ##
 unsecuredPaths: [ ]
