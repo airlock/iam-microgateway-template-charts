@@ -1,0 +1,24 @@
+{{- if has "service-container" .Values.global.modules }}
+{{- if not .Values.global.microgatewaySidecarMode }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: ContentSecurityPolicy
+metadata:
+  name: service-container-content-security-policy
+spec:
+  targetRefs:
+    - name: backend-service-container
+      kind: HTTPRoute
+      group: gateway.networking.k8s.io
+  secured:
+    parserRef:
+      name: iam-parser
+    limitsRef:
+      name: iam-limits
+    headerRewritesRef:
+      name: iam-servicecontainer-header-rewrites
+    filter:
+      denyRulesRef:
+        name: servicecontainer-deny-rules
+{{- end }}
+
+{{- end }}

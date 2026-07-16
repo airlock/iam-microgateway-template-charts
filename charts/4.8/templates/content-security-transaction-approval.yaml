@@ -1,4 +1,5 @@
 {{- if has "transaction-approval" .Values.global.modules }}
+{{- if .Values.global.microgatewaySidecarMode }}
 apiVersion: microgateway.airlock.com/v1alpha1
 kind: ContentSecurity
 metadata:
@@ -14,6 +15,7 @@ spec:
   apiProtectionRef:
     name: iam-transaction-approval-rest-api-protection
   headerRewritesRef:
-      name: iam-transaction-approval-header-rewrites
+    name: iam-transaction-approval-header-rewrites
+{{- end }}
 
 {{- end }}

@@ -1,4 +1,5 @@
 {{- if has "loginapp" .Values.global.modules }}
+{{- if .Values.global.microgatewaySidecarMode }}
 apiVersion: microgateway.airlock.com/v1alpha1
 kind: ContentSecurity
 metadata:
@@ -15,5 +16,6 @@ spec:
     name: iam-loginapp-rest-oauth2-header-rewrites
   apiProtectionRef:
     name: iam-loginapp-rest-oauth2-api-protection
+{{- end }}
 
 {{- end }}

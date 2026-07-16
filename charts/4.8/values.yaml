@@ -2,60 +2,218 @@
 ## Configuration of the Airlock Microgateway that protects Airlock IAM.
 ##
 
-## @param certificate:
+## @section Gateway API Parameters
+## Parameters that are specific to Gateway API mode
+
+## @param gatewayApi Settings that are only used with standalone Gateway API mode.
+##
+gatewayApi:
+  ## @param gatewayApi.gatewayClassName Identifies the corresponding gateway controller.
+  ## Must match the GatewayClass installed by the Airlock Microgateway operator.
+  ##
+  gatewayClassName: airlock-microgateway
+
+  ## @param gatewayApi.gateway Configuration for the Gateway listener resource.
+  ##
+  engine:
+    ## @param gatewayApi.engine.name Name of the Gateway Kubernetes resource.
+    ##
+    name: gateway-iam
+
+    ## @param gatewayApi.engine.hostname Optional hostname constraint for the HTTPS listener.
+    ## When set, the listener only accepts requests matching this hostname.
+    ## Leave empty to accept requests for any hostname.
+    ##
+    hostname: ""
+
+    ## @param gatewayApi.engine.httpsPort External HTTPS port the Gateway listener binds to.
+    ##
+    httpsPort: 8443
+
+    ## @param gatewayApi.engine.tlsOptions TLS options used for the Gateway listener resource.
+    ##
+    tlsOptions: {}
+
+  ## @param gatewayApi.gatewayParameters Options for the GatewayParameters resource.
+  ##
+  gatewayParameters:
+    ## @param gatewayApi.gatewayParameters.logLevel Log level used by the Airlock Microgateway engine.
+    ##
+    logLevel: info
+
+    ## @param gatewayApi.gatewayParameters.serviceType Kubernetes Service type used by Microgateway.
+    ##
+    serviceType: ClusterIP
+
+    ## @param gatewayApi.gatewayParameters.engineReplicas Number of Microgateway engine pod replicas.
+    ##
+    engineReplicas: 1
+
+    ## @param gatewayApi.gatewayParameters.engineResources CPU and memory resource requests/limits for the gateway engine container.
+    ## Follows the standard Kubernetes ResourceRequirements structure.
+    ##
+    engineResources:
+      limits:
+        memory: "256Mi"
+      requests:
+        cpu: "200m"
+        memory: "256Mi"
+
+    ## @param gatewayApi.gatewayParameters.insecureTLSAllowed Allow disabling hostname and certificate validation on TLS connections.
+    ##
+    insecureTLSAllowed: false
+
+  ## @param gatewayApi.targetService Backend IAM service that all routes proxy traffic to.
+  ##
+  targetService:
+    ## @param gatewayApi.targetService.name Name of the service for the IAM backend.
+    ##
+    name: iam
+
+    ## @param gatewayApi.targetService.hostname Hostname for TLS SNI and certificate validation when connecting to the backend.
+    ## Must match the CN or a SAN on the backend's TLS certificate.
+    ##
+    hostname: iam
+
+    ## @param gatewayApi.targetService.port Port on the backend Kubernetes Service.
+    ##
+    port: 8443
+
+    ## @param gatewayApi.targetService.sectionName Name of the HTTPs port section.
+    ##
+    sectionName: https
+
+    ## @param gatewayApi.targetService.wellKnownCACertificates Well-known CA certificate bundle for validating the backend's TLS certificate.
+    ## "System" uses the OS trust store. Set to an empty value to disable well-known CA usage and rely solely on caCertificateRefs.
+    ## At least one of 'wellKnownCACertificates' and 'caCertificateRefs' must be set.
+    ##
+    wellKnownCACertificates: System
+
+    ## @param gatewayApi.targetService.caCertificateRefs List of CA certificate references (ConfigMap or Secret) for backend TLS validation.
+    ## Use when the backend uses a private or self-signed CA not included in the well-known bundle.
+    ## Each entry follows the Kubernetes LocalObjectReference / ObjectReference structure.
+    ## At least one of 'wellKnownCACertificates' and 'caCertificateRefs' must be set.
+    ##
+    caCertificateRefs: []
+
+    ## @param gatewayApi.targetService.tlsOptions Additional TLS options for backend connections.
+    ##
+    tlsOptions: {}
+
+  ## @param gatewayApi.unsecuredPaths For each entry, creates an HTTPRoute resource that defines an unprotected backend path.
+  ## Each entry is required to have the following keys:
+  ## - name: Name of the HTTPRoute resource that will be created.
+  ## - path: Path on the backend host that will be set as 'unsecured' by Airlock Microgateway.
+  ## Note: Using this setting when the application is exposed to untrusted downstream traffic is highly discouraged.
+  ##
+  unsecuredPaths: []
+
+
+## @section Certificate Parameters
+## TLS certificate settings for the downstream (client-facing) listener.
+##
+
+## @param certificate Certificate configuration.
 ##
 certificate:
-  ## @param certificate.secretName: Identifier of the certificate secret
+  ## @param certificate.secretName Name of the Kubernetes Secret containing the downstream TLS certificate and key.
+  ## Referenced by both the Gateway listener and the Sidecar. If using cert-manager, generated into this Secret.
   ##
   secretName: "airlock-iam-service-downstream-cert"
-  ## @param certificate.issuerName: Name of the issuer of the secret. Default is self-signed.
+
+  ## @param certificate.issuerName Name of the cert-manager Issuer used to issue the certificate.
+  ## Default "selfsigned-issuer" creates a self-signed certificate for testing.
   ##
   issuerName: "selfsigned-issuer"
-  ## @param certificate.commonName:
+
+  ## @param certificate.commonName Common Name (CN) to set on the certificate.
+  ## Leave empty to let cert-manager derive the CN from dnsNames.
   ##
   commonName: ""
-  ## @param certificate.dnsNames:
+
+  ## @param certificate.dnsNames DNS Subject Alternative Names (SANs) for the certificate.
+  ## The certificate will be valid for all listed hostnames.
   ##
   dnsNames: [ ]
 
-## @param unsecuredPaths: A list of URL paths that should be exposed, but not protected by Airlock Microgateway
+## @param unsecuredPaths A list of URL paths that should be exposed but not protected by Airlock Microgateway.
+## Note: This is a legacy field that only takes effect in sidecar mode.
+## See gatewayApi.unsecuredPaths for the equivalent setting in standalone Gateway API mode.
+## Note: Using this setting when the application is exposed to untrusted downstream traffic is highly discouraged.
 ##
 unsecuredPaths: [ ]
 
+
+## @section Global Parameters
+## Global settings shared with the IAM demo helm chart.
+##
+
+## @param global Parameters shared between IAM and Microgateway
 global:
-  ## @param global.microgatewayVersion: The Airlock Microgateway version this template is adapted for.
-  ## Can be used to enable backwards-compatibility with older versions of Airlock Microgateway
+  ## @param global.microgatewayVersion The Airlock Microgateway version this template is adapted for.
+  ## Used for gating certain features that are not supported with older versions of Microgateway.
+  ##
   microgatewayVersion: '4.8'
-  ## @param global.iamPodLabels: The labels define on to which Pod Microgateway attaches to run as a Sidecar.
+
+  ## @param global.microgatewaySidecarMode Airlock Microgateway deployment mode selector.
+  ## true  - Sidecar mode: The Microgateway engine is injected as a sidecar container into appropriately labeled IAM pods.
+  ## false - Gateway API mode: The Microgateway engine runs as a separate pod and service, and acts as a proper gateway.
+  ##
+  microgatewaySidecarMode: true
+
+  ## @param global.iamPodLabels Expand this with additional labels to set on the IAM pod.
   ##
   iamPodLabels:
+    ## @param global.iamPodLabels.app Used to identify the IAM pod for sidecar injection.
+    ##
     app: iam
-  ## @param global.instanceName: What name the IAM instance should have.
-  ##
-  instanceName: auth
-  ## @param global.modules: The selected Modules will be exposed and protected by Airlock Microgateway.
+
+  ## @param global.modules List of IAM application modules to activate and protect via Airlock Microgateway.
+  ## Only modules present in this list will have routes created.
   ##
   modules: ['adminapp', 'loginapp', 'transaction-approval', 'service-container']
-  ## @param global.path: Defines the path under which each module can be accessed.
-  ## This is applied to the IAM instance properties values "iam.*.url.path", as well as the SidecarGateway path prefixes.
+
+  ## @param global.path URL base path under which each module is accessible.
+  ## These values are applied to the IAM instance properties (iam.*.url.path) as well as the
+  ## SidecarGateway and HTTPRoute path prefix definitions.
   ##
   path:
+    ## @param global.path.adminapp Base path for the Admin UI and its REST API (/rest, /editConfig sub-paths).
+    ##
     adminapp: /auth-admin
+
+    ## @param global.path.loginapp Base path for the Login UI and its REST API (public, protected, and OAuth2 endpoints).
+    ##
     loginapp: /auth-login
+
+    ## @param global.path.transactionApproval Base path for the Transaction Approval module REST API.
+    ##
     transactionApproval: /auth-transaction-approval
+
+    ## @param global.path.apiPolicyService Base path for the API Policy Service.
+    ##
     apiPolicyService: /auth-api-policy-service
+
+    ## @param global.path.serviceContainer Base path for the Service Container module.
+    ##
     serviceContainer: /auth-servicecontainer
-  ## @param global.iamHttpsPort: The port, on which Airlock IAM endpoints are exposed. The default is 8443.
-  ## Must be unique among iamHttpsPort, metricsPort and healthPort. Must be set.
+
+  ## @param global.iamHttpsPort Port on which Airlock IAM endpoints are exposed.
+  ## Must be unique among iamHttpsPort, metricsPort, and healthPort.
   ##
   iamHttpsPort: 8443
-  ## @param global.metricsPort: The port, on which metrics endpoints are exposed.
+
+  ## @param global.metricsPort Port on which Prometheus metrics endpoints are exposed.
   ## This port will be exposed unprotected and access must be controlled with network policies.
-  ## Must be unique among iamHttpsPort, metricsPort and healthPort.
+  ## Must be unique among iamHttpsPort, metricsPort, and healthPort.
+  ## Set to 'false' to disable.
   ##
   metricsPort: false
-  ## @param global.healthPort: The port, on which health endpoints are exposed.
-  ## This port will be exposed unprotected and access must be controlled with network policies.
-  ## Must be unique among iamHttpsPort, metricsPort and healthPort.
+
+  ## @param global.healthPort Port on which Kubernetes liveness/readiness health check probes are exposed.
+  ## When set to a port number, an unsecured route to that port is created.
+  ## This port will be exposed unprotected — access must be controlled with network policies.
+  ## Must be unique among iamHttpsPort, metricsPort, and healthPort.
+  ## Set to 'false' to disable.
   ##
   healthPort: false

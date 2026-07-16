@@ -1,3 +1,4 @@
+{{- if .Values.global.microgatewaySidecarMode }}
 apiVersion: microgateway.airlock.com/v1alpha1
 kind: ContentSecurity
 metadata:
@@ -8,3 +9,4 @@ spec:
       name: unspecified-path-deny-rule
   headerRewritesRef:
     name: unspecified-path-header-rewrites
+{{- end }}
