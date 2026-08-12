@@ -23,7 +23,7 @@ The Helm Charts contained in this repository are production-ready.
 
 Documentation on Airlock IAM may be found at **[docs.airlock.com](https://docs.airlock.com/iam/latest/)** or the product website at **[Airlock Identity and Access Management](https://www.airlock.com/en/secure-access-hub/components/iam)**.
 
-For setting up Airlock Microgateway 4.0 and above, please check the following repository:
+For setting up Airlock Microgateway, please check the following repository:
 
 * [Airlock Microgateway on Github](https://github.com/airlock/microgateway)
 
