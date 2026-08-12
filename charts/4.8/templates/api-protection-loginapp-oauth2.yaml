@@ -2,11 +2,11 @@
 apiVersion: microgateway.airlock.com/v1alpha1
 kind: APIProtection
 metadata:
-  name: iam-loginapp-rest-protected-api-protection
+  name: iam-loginapp-rest-oauth2-api-protection
 spec:
   policies:
-  - name: Loginapp Protected REST API
+  - name: OAuth2 REST API
     openAPIRef:
-      name: loginapp-protected-openapi
+      name: loginapp-oauth2-openapi
 
 {{- end }}

@@ -384,7 +384,6 @@ spec:
             matcher:
               regex: "^{{ .Values.global.path.adminapp }}/editConfig/UIDL/.*$"
               ignoreCase: false
-{{- if semverCompare ">=4.4" .Values.global.microgatewayVersion }}
       - ruleKeys:
         - "SSRF"
         blockedData:
@@ -448,6 +447,5 @@ spec:
         requestConditions:
           method:
           - "POST"
-{{- end }}
 
 {{- end }}

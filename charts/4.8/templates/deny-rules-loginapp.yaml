@@ -11,6 +11,67 @@ spec:
         threatHandlingMode: Block
       exceptions:
       - ruleKeys:
+        - "SCANNING"
+        blockedData:
+          json:
+            jsonPath: "$['password','oldPassword','newPassword']"
+      - ruleKeys:
+        - "BOT"
+        blockedData:
+          header:
+            name:
+              matcher:
+                regex: "^User-Agent$"
+        requestConditions:
+          method:
+          - "POST"
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.loginapp }}/rest/oauth2/authorization-servers/[a-zA-Z0-9._\\-]+/(?:token|introspect|revoke|par)/?$"
+              ignoreCase: false
+      - ruleKeys:
+        - "BOT"
+        blockedData:
+          header:
+            name:
+              matcher:
+                regex: "^User-Agent$"
+        requestConditions:
+          method:
+          - "POST"
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.loginapp }}/rest/public/tech-client-registration/oauth2/[a-zA-Z0-9._\\-]+/register/?$"
+              ignoreCase: false
+      - ruleKeys:
+        - "BOT"
+        blockedData:
+          header:
+            name:
+              matcher:
+                regex: "^User-Agent$"
+        requestConditions:
+          method:
+          - "POST"
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.loginapp }}/rest/public/tech-client-registration/dynamic-steps/(?:retrieve|([a-z0-9_\\-]+/(?:activate|deactivate)))/?$"
+              ignoreCase: false
+      - ruleKeys:
+        - "BOT"
+        blockedData:
+          header:
+            name:
+              matcher:
+                regex: "^User-Agent$"
+        requestConditions:
+          method:
+          - "POST"
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.loginapp }}/rest/public/tech-client-registration/goto-targets/(?:retrieve|([a-z0-9_\\-]+/goto))/?$"
+              ignoreCase: false
+      - ruleKeys:
         - "SQL"
         blockedData:
           parameter:
@@ -1394,68 +1455,6 @@ spec:
           json:
             jsonPath: "$['password','oldPassword','newPassword']"
       - ruleKeys:
-        - "SCANNING"
-        blockedData:
-          json:
-            jsonPath: "$['password','oldPassword','newPassword']"
-{{- if semverCompare ">=4.4" .Values.global.microgatewayVersion }}
-      - ruleKeys:
-        - "BOT"
-        blockedData:
-          header:
-            name:
-              matcher:
-                regex: "^User-Agent$"
-        requestConditions:
-          method:
-          - "POST"
-          path:
-            matcher:
-              regex: "^{{ .Values.global.path.loginapp }}/rest/public/tech-client-registration/oauth2/[a-zA-Z0-9._\\-]+/register/?$"
-              ignoreCase: false
-      - ruleKeys:
-        - "BOT"
-        blockedData:
-          header:
-            name:
-              matcher:
-                regex: "^User-Agent$"
-        requestConditions:
-          method:
-          - "POST"
-          path:
-            matcher:
-              regex: "^{{ .Values.global.path.loginapp }}/rest/oauth2/authorization-servers/[a-zA-Z0-9._\\-]+/(?:token|introspect|revoke|par)/?$"
-              ignoreCase: false
-      - ruleKeys:
-        - "BOT"
-        blockedData:
-          header:
-            name:
-              matcher:
-                regex: "^User-Agent$"
-        requestConditions:
-          method:
-          - "POST"
-          path:
-            matcher:
-              regex: "^{{ .Values.global.path.loginapp }}/rest/public/tech-client-registration/dynamic-steps/(?:retrieve|([a-z0-9_\\-]+/(?:activate|deactivate)))/?$"
-              ignoreCase: false
-      - ruleKeys:
-        - "BOT"
-        blockedData:
-          header:
-            name:
-              matcher:
-                regex: "^User-Agent$"
-        requestConditions:
-          method:
-          - "POST"
-          path:
-            matcher:
-              regex: "^{{ .Values.global.path.loginapp }}/rest/public/tech-client-registration/goto-targets/(?:retrieve|([a-z0-9_\\-]+/goto))/?$"
-              ignoreCase: false
-      - ruleKeys:
         - "SSRF"
         blockedData:
           parameter:
@@ -1505,6 +1504,5 @@ spec:
             matcher:
               regex: "^{{ .Values.global.path.loginapp }}/rest/public/authentication/location/(access|interpret)/?$"
               ignoreCase: false
-{{- end }}
 
 {{- end }}
