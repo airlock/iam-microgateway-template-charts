@@ -1,0 +1,17 @@
+{{- if not .Values.global.microgatewaySidecarMode }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: ContentSecurityPolicy
+metadata:
+  name: unspecified-path-content-security-policy
+spec:
+  targetRefs:
+  - name: backend-unspecified-path
+    kind: HTTPRoute
+    group: gateway.networking.k8s.io
+  secured:
+    filter:
+      denyRulesRef:
+        name: unspecified-path-deny-rule
+    headerRewritesRef:
+      name: unspecified-path-header-rewrites
+{{- end }}

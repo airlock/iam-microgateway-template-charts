@@ -1,0 +1,12 @@
+{{- if has "adminapp" .Values.global.modules }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: APIProtection
+metadata:
+  name: iam-adminapp-rest-api-protection
+spec:
+  policies:
+  - name: Adminapp REST API
+    openAPIRef:
+      name: adminapp-openapi
+
+{{- end }}

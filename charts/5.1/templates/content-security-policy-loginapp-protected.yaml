@@ -1,0 +1,26 @@
+{{- if has "loginapp" .Values.global.modules }}
+{{- if not .Values.global.microgatewaySidecarMode }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: ContentSecurityPolicy
+metadata:
+  name: loginapp-rest-protected-content-security-policy
+spec:
+  targetRefs:
+  - name: backend-loginapp-rest-protected
+    kind: HTTPRoute
+    group: gateway.networking.k8s.io
+  secured:
+    parserRef:
+      name: iam-parser
+    limitsRef:
+      name: iam-limits
+    filter:
+      denyRulesRef:
+        name: loginapp-rest-protected-deny-rules
+    headerRewritesRef:
+      name: iam-loginapp-rest-protected-header-rewrites
+    apiProtectionRef:
+      name: iam-loginapp-rest-protected-api-protection
+{{- end }}
+
+{{- end }}

@@ -1,0 +1,27 @@
+{{- if not .Values.global.microgatewaySidecarMode }}
+{{- if .Values.gatewayApi.rateLimit.enabled }}
+{{- if not (semverCompare ">=5.1" .Values.global.microgatewayVersion) }}
+{{- fail (printf "gatewayApi.rateLimit.enabled requires Airlock Microgateway 5.1 or newer (global.microgatewayVersion is %q)." .Values.global.microgatewayVersion) }}
+{{- end }}
+{{- range .Values.gatewayApi.rateLimit.policies }}
+{{- if not .limits }}
+{{- fail (printf "gatewayApi.rateLimit.policies entry %q has no 'limits'." .name) }}
+{{- end }}
+---
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: RateLimitPolicy
+metadata:
+  name: {{ .name }}
+spec:
+  targetRefs:
+  {{- range .routes }}
+  - name: {{ . }}
+    kind: HTTPRoute
+    group: gateway.networking.k8s.io
+  {{- end }}
+  policies:
+{{ toYaml .limits | indent 2 }}
+...
+{{- end }}
+{{- end }}
+{{- end }}

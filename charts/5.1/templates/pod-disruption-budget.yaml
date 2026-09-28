@@ -1,0 +1,11 @@
+{{- if not .Values.global.microgatewaySidecarMode }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: "{{ .Values.gatewayApi.engine.name }}-pdb"
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      gateway.networking.k8s.io/gateway-name: "{{ .Values.gatewayApi.engine.name }}"
+{{- end }}

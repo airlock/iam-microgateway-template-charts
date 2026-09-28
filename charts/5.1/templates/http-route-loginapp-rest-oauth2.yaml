@@ -1,0 +1,24 @@
+{{- if has "loginapp" .Values.global.modules }}
+{{- if not .Values.global.microgatewaySidecarMode }}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: backend-loginapp-rest-oauth2
+spec:
+  parentRefs:
+  - name: {{ quote .Values.gatewayApi.engine.name }}
+    kind: Gateway
+    group: gateway.networking.k8s.io
+    sectionName: https
+  rules:
+  - matches:
+    - path:
+        value: {{ .Values.global.path.loginapp }}/rest/oauth2
+    backendRefs:
+    - name: {{ .Values.gatewayApi.targetService.name }}
+      kind: Service
+      group: ""
+      port: {{ .Values.gatewayApi.targetService.port }}
+{{- end }}
+
+{{- end }}

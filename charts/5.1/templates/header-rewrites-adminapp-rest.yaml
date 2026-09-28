@@ -1,0 +1,12 @@
+{{- if has "adminapp" .Values.global.modules }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: HeaderRewrites
+metadata:
+  name: iam-adminapp-rest-header-rewrites
+spec:
+  response:
+    add:
+      builtIn:
+        csp: true
+
+{{- end }}

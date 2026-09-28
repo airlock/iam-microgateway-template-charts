@@ -1,0 +1,12 @@
+{{- if has "loginapp" .Values.global.modules }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: APIProtection
+metadata:
+  name: iam-loginapp-rest-public-api-protection
+spec:
+  policies:
+  - name: Loginapp Public REST API
+    openAPIRef:
+      name: loginapp-public-openapi
+
+{{- end }}

@@ -1,0 +1,24 @@
+{{- if has "adminapp" .Values.global.modules }}
+{{- if not .Values.global.microgatewaySidecarMode }}
+apiVersion: microgateway.airlock.com/v1alpha1
+kind: ContentSecurityPolicy
+metadata:
+  name: adminapp-content-security-policy
+spec:
+  targetRefs:
+  - name: backend-adminapp
+    kind: HTTPRoute
+    group: gateway.networking.k8s.io
+  secured:
+    parserRef:
+      name: iam-parser
+    limitsRef:
+      name: iam-limits
+    filter:
+      denyRulesRef:
+        name: adminapp-deny-rules
+    headerRewritesRef:
+      name: iam-adminapp-header-rewrites
+{{- end }}
+
+{{- end }}
