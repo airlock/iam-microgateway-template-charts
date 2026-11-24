@@ -1,4 +1,5 @@
 {{- if has "service-container" .Values.global.modules }}
+{{- if .Values.global.microgatewaySidecarMode }}
 apiVersion: microgateway.airlock.com/v1alpha1
 kind: ContentSecurity
 metadata:
@@ -13,5 +14,6 @@ spec:
   filter:
     denyRulesRef:
       name: servicecontainer-deny-rules
+{{- end }}
 
 {{- end }}

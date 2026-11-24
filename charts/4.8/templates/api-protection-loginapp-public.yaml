@@ -5,8 +5,8 @@ metadata:
   name: iam-loginapp-rest-public-api-protection
 spec:
   policies:
-  - name: Loginapp REST API
+  - name: Loginapp Public REST API
     openAPIRef:
-      name: loginapp-openapi
+      name: loginapp-public-openapi
 
 {{- end }}
