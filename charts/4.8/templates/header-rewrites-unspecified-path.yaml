@@ -1,3 +1,4 @@
+{{- $enableCsp := semverCompare ">=4.8" .Values.global.microgatewayVersion }}
 apiVersion: microgateway.airlock.com/v1alpha1
 kind: HeaderRewrites
 metadata:
@@ -6,4 +7,4 @@ spec:
   response:
     add:
       builtIn:
-        csp: false
+        csp: {{ $enableCsp }}

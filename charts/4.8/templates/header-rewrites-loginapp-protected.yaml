@@ -29,8 +29,8 @@ spec:
                     exact: "X-Iam-Sso-Ticket"
             name: "SSO Ticket header"
   response:
-      add:
-        builtIn:
-          csp: true
+    add:
+      builtIn:
+        csp: true
 
 {{- end }}
