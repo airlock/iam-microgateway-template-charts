@@ -9,6 +9,7 @@ spec:
       settings:
         level: Strict
         threatHandlingMode: Block
+
       exceptions:
       - ruleKeys:
         - "SQL"
@@ -68,6 +69,19 @@ spec:
         blockedData:
           json:
             jsonPath: "$['password','oldPassword','newPassword']"
+      - ruleKeys:
+        - "XSS"
+        blockedData:
+          parameter:
+            name:
+              matcher:
+                regex: "^filter$"
+                ignoreCase: false
+        requestConditions:
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.adminapp }}/rest/logs/.*$"
+              ignoreCase: false
       - ruleKeys:
         - "XSS"
         requestConditions:
@@ -137,6 +151,46 @@ spec:
             jsonPath: "$['password','oldPassword','newPassword']"
       - ruleKeys:
         - "HTML"
+        blockedData:
+          json:
+            jsonPath: "$.data.attributes.translations.en"
+        requestConditions:
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.adminapp }}/rest/maintenance-messages.*"
+              ignoreCase: false
+      - ruleKeys:
+        - "HTML"
+        blockedData:
+          json:
+            jsonPath: "$.data.attributes.translations.fr"
+        requestConditions:
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.adminapp }}/rest/maintenance-messages.*"
+              ignoreCase: false
+      - ruleKeys:
+        - "HTML"
+        blockedData:
+          json:
+            jsonPath: "$.data.attributes.translations.de"
+        requestConditions:
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.adminapp }}/rest/maintenance-messages.*"
+              ignoreCase: false
+      - ruleKeys:
+        - "HTML"
+        blockedData:
+          json:
+            jsonPath: "$.data.attributes.translations.it"
+        requestConditions:
+          path:
+            matcher:
+              regex: "^{{ .Values.global.path.adminapp }}/rest/maintenance-messages.*"
+              ignoreCase: false
+      - ruleKeys:
+        - "HTML"
         requestConditions:
           path:
             matcher:
@@ -331,6 +385,7 @@ spec:
             matcher:
               regex: "^{{ .Values.global.path.adminapp }}/editConfig/UIDL/.*$"
               ignoreCase: false
+{{- if semverCompare ">=4.4" .Values.global.microgatewayVersion }}
       - ruleKeys:
         - "SSRF"
         blockedData:
@@ -394,5 +449,6 @@ spec:
         requestConditions:
           method:
           - "POST"
+{{- end }}
 
 {{- end }}
