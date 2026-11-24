@@ -1,5 +1,4 @@
 {{- if has "adminapp" .Values.global.modules }}
-{{- if .Values.global.microgatewaySidecarMode }}
 apiVersion: microgateway.airlock.com/v1alpha1
 kind: ContentSecurity
 metadata:
@@ -15,7 +14,6 @@ spec:
   apiProtectionRef:
     name: iam-adminapp-rest-api-protection
   headerRewritesRef:
-    name: iam-adminapp-rest-header-rewrites
-{{- end }}
+      name: iam-adminapp-rest-header-rewrites
 
 {{- end }}
